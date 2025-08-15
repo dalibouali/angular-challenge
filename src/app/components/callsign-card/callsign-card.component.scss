@@ -1,0 +1,58 @@
+.route-card {
+  .airline { font-weight: 600; }
+  .callsign { opacity: .85; margin-left: .25rem; }
+
+  mat-card-subtitle {
+    margin-top: .25rem;
+    mat-chip { height: 22px; font-size: 12px; }
+  }
+}
+
+.route-content {
+  padding: 12px 16px;
+
+  .timeline {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: 12px;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      .connector { display: none; }
+    }
+  }
+
+  .leg {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 8px;
+    align-items: start;
+
+    .node {
+      font-size: 22px;
+      margin-top: 2px;
+    }
+    .takeoff  { opacity: .9; }
+    .stop     { opacity: .7; }
+    .land     { opacity: .9; }
+
+    .leg-body {
+      .codes { margin-bottom: 4px; }
+      .name  { font-weight: 600; }
+      .meta  { opacity: .8; font-size: .9rem; }
+    }
+  }
+
+  .connector {
+    display: grid;
+    place-items: center;
+    .line {
+      width: 2px;
+      height: 36px;
+      background: rgba(0,0,0,0.12);
+      margin-bottom: 4px;
+    }
+    .arrow { font-size: 18px; opacity: .7; }
+  }
+}

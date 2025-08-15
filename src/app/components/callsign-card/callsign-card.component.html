@@ -1,0 +1,81 @@
+<mat-card class="route-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>
+      <span class="airline">{{ route.airline?.name || 'Unknown airline' }}</span>
+      <span class="callsign">• {{ route.callsign || 'Unknown' }}</span>
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="route.airline?.icao || route.airline?.iata">
+      <mat-chip-set>
+        <mat-chip *ngIf="route.airline?.iata">IATA {{ route.airline?.iata }}</mat-chip>
+        <mat-chip *ngIf="route.airline?.icao">ICAO {{ route.airline?.icao }}</mat-chip>
+      </mat-chip-set>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="route-content">
+    <!-- timeline -->
+    <div class="timeline">
+      <div class="leg">
+        <mat-icon class="node takeoff" aria-hidden="true" color="primary">flight_takeoff</mat-icon>
+        <div class="leg-body">
+          <div class="codes">
+            <mat-chip-set>
+              <mat-chip *ngIf="route.origin.iata_code">{{ route.origin.iata_code }}</mat-chip>
+              <mat-chip *ngIf="route.origin.icao_code">{{ route.origin.icao_code }}</mat-chip>
+            </mat-chip-set>
+          </div>
+          <div class="name">{{ route.origin.name || 'Unknown origin' }}</div>
+          <div class="meta">
+            <span *ngIf="route.origin.municipality">{{ route.origin.municipality }}</span>
+            <span *ngIf="route.origin.country_name">, {{ route.origin.country_name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <div class="line"></div>
+        <div class="arrow">→</div>
+      </div>
+
+      <div class="leg" *ngIf="route.midpoint as mid">
+        <mat-icon class="node stop" aria-hidden="true">stop_circle</mat-icon>
+        <div class="leg-body">
+          <div class="codes">
+            <mat-chip-set>
+              <mat-chip *ngIf="mid.iata_code">{{ mid.iata_code }}</mat-chip>
+              <mat-chip *ngIf="mid.icao_code">{{ mid.icao_code }}</mat-chip>
+            </mat-chip-set>
+          </div>
+          <div class="name">{{ mid.name }}</div>
+          <div class="meta">
+            <span *ngIf="mid.municipality">{{ mid.municipality }}</span>
+            <span *ngIf="mid.country_name">, {{ mid.country_name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector" *ngIf="route.midpoint">
+        <div class="line"></div>
+        <div class="arrow">→</div>
+      </div>
+
+      <div class="leg">
+        <mat-icon class="node land" color="accent" aria-hidden="true">flight_land</mat-icon>
+        <div class="leg-body">
+          <div class="codes">
+            <mat-chip-set>
+              <mat-chip *ngIf="route.destination.iata_code">{{ route.destination.iata_code }}</mat-chip>
+              <mat-chip *ngIf="route.destination.icao_code">{{ route.destination.icao_code }}</mat-chip>
+            </mat-chip-set>
+          </div>
+
+          <div class="name"> {{ route.destination.name || 'Unknown destination' }}</div>
+          <div class="meta">
+            <span *ngIf="route.destination.municipality">{{ route.destination.municipality }}</span>
+            <span *ngIf="route.destination.country_name">, {{ route.destination.country_name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

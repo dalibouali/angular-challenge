@@ -1,0 +1,20 @@
+ <mat-card class="aircraft-card" appearance="outlined">
+    <mat-card-header>
+      <img mat-card-avatar [src]="aircraft.url_photo_thumbnail || 'assets/images/no_thumbnail.jpg'"
+           [alt]="(aircraft.registration || 'Unknown') + ' avatar'">
+      <mat-card-title>{{ aircraft.registration || 'Unknown' }}</mat-card-title>
+      <mat-card-subtitle>Mode-S: {{ aircraft.mode_s || 'N/A' }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <img mat-card-image class="aircraft-photo"
+         [src]="aircraft.url_photo || 'assets/images/No_Image_Available.jpg'"
+         alt="aircraft photo">
+
+    <mat-card-content class="aircraft-details">
+      <p><strong>Owner:</strong> {{ aircraft.registered_owner || '—' }}</p>
+      <p><strong>Country:</strong> {{ aircraft.registered_owner_country_name || '—' }}</p>
+      <p><strong>Manufacturer:</strong> {{ aircraft.manufacturer || '—' }}</p>
+      <p><strong>Type:</strong> {{ aircraft.type || '—' }}</p>
+      <p><strong>ICAO Type:</strong> {{ aircraft.icao_type || '—' }}</p>
+    </mat-card-content>
+  </mat-card>

@@ -1,0 +1,117 @@
+<div class="container">
+  <!-- Search card -->
+  <mat-card class="search-card">
+    <h1>Aircraft & Flight Lookup</h1>
+
+    <mat-radio-group [formControl]="searchType" class="radio-group">
+      <mat-radio-button value="aircraft">Aircraft</mat-radio-button>
+      <mat-radio-button value="callsign">Callsign</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field appearance="outline" class="full" floatLabel="always">
+      <mat-label>
+        {{
+          searchType.value === "aircraft"
+            ? "Aircraft identifier (mode_s and/or registration)"
+            : "Callsign identifier (callsign)"
+        }}
+      </mat-label>
+
+      <mat-chip-listbox class="chip-list" aria-label="Identifiers">
+        <mat-chip *ngFor="let id of identifiers" (removed)="remove(id)">
+          {{ id }}
+          <button matChipRemove aria-label="Remove identifier">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-chip>
+
+        <input
+          matInput
+          [formControl]="inputControl"
+          [placeholder]="
+            searchType.value === 'aircraft'
+              ? 'Type and press Enter or Space (e.g. D-AIJA, 3C6444)'
+              : 'Type a callsign and press Enter (e.g. RYR98BK)'
+          "
+          (keydown.enter)="addFromInput()"
+          (keydown.space)="addFromInput()"
+        />
+      </mat-chip-listbox>
+    </mat-form-field>
+
+    <div class="actions">
+      <button
+        mat-flat-button
+        class="search-btn"
+        (click)="searchAll()"
+        [disabled]="!identifiers.length || isLoading"
+      >
+        Search
+      </button>
+      <button mat-button (click)="clearAll()" [disabled]="isLoading">
+        Clear
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      <mat-progress-spinner
+        mode="indeterminate"
+        diameter="30"
+      ></mat-progress-spinner>
+    </div>
+
+    <div *ngIf="errorMessage" class="error">
+      <mat-icon>error</mat-icon> {{ errorMessage }}
+    </div>
+  </mat-card>
+
+  <div
+    class="carousel-wrap"
+    *ngIf="searchType.value === 'aircraft' ? aircrafts.length : routes.length"
+  >
+    <button
+      class="nav-btn"
+      (click)="prev()"
+      [disabled]="
+        (searchType.value === 'aircraft' ? aircrafts.length : routes.length) < 2
+      "
+      aria-label="Previous"
+    >
+      &#10094;
+    </button>
+
+    <div
+      class="carousel"
+      #carousel
+      [class.single]="
+        (searchType.value === 'aircraft' ? aircrafts.length : routes.length) ===
+        1
+      "
+    >
+      <ng-container
+        *ngIf="searchType.value === 'aircraft'; else callsignSlides"
+      >
+        <div class="slide" *ngFor="let a of aircrafts">
+          <app-aircraft-card [aircraft]="a"></app-aircraft-card>
+        </div>
+      </ng-container>
+
+      <ng-template #callsignSlides>
+        <div class="slide callsign-slide" *ngFor="let r of routes">
+          <app-callsign-card [route]="r"></app-callsign-card>
+        </div>
+      </ng-template>
+    </div>
+
+    <button
+      class="nav-btn"
+      (click)="next()"
+      [disabled]="
+        (searchType.value === 'aircraft' ? aircrafts.length : routes.length) < 2
+      "
+      aria-label="Next"
+    >
+      &#10095;
+    </button>
+  </div>
+</div>
